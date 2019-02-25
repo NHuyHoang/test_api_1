@@ -8,5 +8,8 @@
         "**/.git": true,
         "**/.pyc": true,
     },
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django"
+    ],
     "files.autoSave": "afterDelay"
 }
