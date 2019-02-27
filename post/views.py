@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions, renderers
+from rest_framework import generics, permissions, renderers, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -20,6 +20,12 @@ class post_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = post_serializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def get(self, request, *args, **kwargs):
+        post = self.get_object()
+        post.something_new = 'new value'
+        serializer = post_serializer(post)
+        return Response(serializer.data)
 
 class post_body(generics.GenericAPIView): # new
     queryset = Post.objects.all()
