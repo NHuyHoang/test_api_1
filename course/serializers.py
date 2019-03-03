@@ -3,7 +3,6 @@ from .models import Course
 from student.models import Student
 # from student.serializers import StudentSerializer
 
-
 class CourseSerializer(serializers.ModelSerializer):
     # register = StudentSerializer(many=True, read_only=True)
     register = serializers.PrimaryKeyRelatedField(
