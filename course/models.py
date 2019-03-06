@@ -19,7 +19,14 @@ class Course(models.Model):
             self.id = generate()
         super().save(*kwargs)
 
-
     def clean(self):
         if(self.date_start > self.date_end):
             raise ValidationError(_('Start date must bigger than end date'))
+
+    def to_json(self):
+        return dict(
+            id=self.id,
+            name=self.name,
+            date_start=self.date_start,
+            date_end=self.date_end
+        )

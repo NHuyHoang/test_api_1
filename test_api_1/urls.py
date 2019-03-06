@@ -28,4 +28,5 @@ urlpatterns = [
     path(r'v1/', include('course.urls')),
     path(r'token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path(r'token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(r'v1/', include('shop.urls')),
 ]

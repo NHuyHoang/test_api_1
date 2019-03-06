@@ -15,3 +15,9 @@ class Student(models.Model):
         if not self.id:
             self.id = generate()
         super().save(*kwargs)
+
+    def to_json(self):
+        return dict(
+            id=self.id,
+            name=self.name
+        )
