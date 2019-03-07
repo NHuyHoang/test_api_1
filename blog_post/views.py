@@ -11,10 +11,8 @@ from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.models import User
-# from rest_framework.authentication import BasicAuthentication
-# from rest_framework.permissions import IsAuthenticated
-# from rest_framework.decorators import authentication_classes, permission_classes
-# from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class post_list(generics.ListCreateAPIView):
@@ -47,15 +45,16 @@ class post_detail(MultiKeyGetObject, generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BlogSerializer
     lookup_fields = ('title', 'id')
 
+
 class post_viewset(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all()
     serializer_class = BlogSerializer
-    user = User.objects.get(username='huyhoang')
-    #authentication_classes = ([],)
-    #permission_classes = ([],)
+    # user = User.objects.get(username='huyhoang')
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
-    #@login_required() 
-    #@permission_required('Can view blog post')
+    # @login_required()
+    # @permission_required('Can view blog post')
     @action(detail=True, methods=['get'])
     def change_title(self, request, pk=None):
         blog = self.get_object()
@@ -64,3 +63,13 @@ class post_viewset(viewsets.ModelViewSet):
         #     blog.title = request.data['title']
         #     blog.save()
         return Response(model_to_dict(blog))
+
+    def list(self, request):
+        print(request.user)
+        queryset = BlogPost.objects.all()
+        serializer = BlogSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def check_object_permissions(self, request, obj):
+        print(obj)
+        return True;

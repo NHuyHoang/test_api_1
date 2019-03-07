@@ -14,7 +14,7 @@ class CourseList(generics.ListAPIView):
 
     def list(self,request):
         queryset = self.get_queryset()
-        print(type(request.user))
+        print(request.user)
         serializer = CourseSerializer(queryset,many=True)
         courses = serializer.data
         res = {}
